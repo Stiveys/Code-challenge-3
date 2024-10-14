@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentFilm; // Store the current movie being displayed
 
+
     fetch(baseURL)
 
         .then((res) => res.json())
@@ -22,8 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.addEventListener("click", () => displayFilmDetails(film));
                 movieList.appendChild(li);
             });
+
             displayFilmDetails(films[0]);
         });
+
+
     function displayFilmDetails(film) {
         currentFilm = film;
         poster.src = film.poster;
@@ -32,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         filmInfo.textContent = film.description;
         showtime.textContent = film.showtime;
         ticketNum.textContent = `${film.capacity - film.tickets_sold} remaining tickets`;
+
 
         if (film.capacity - film.tickets_sold === 0) {
             buyTicketButton.textContent = "Sold Out";
@@ -42,10 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
     buyTicketButton.addEventListener("click", () => {
         if (currentFilm.tickets_sold < currentFilm.capacity) {
             currentFilm.tickets_sold += 1;
             ticketNum.textContent = `${currentFilm.capacity - currentFilm.tickets_sold} remaining tickets`;
+
 
             fetch(`${baseURL}/${currentFilm.id}`, {
                 method: "PATCH",
@@ -56,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     tickets_sold: currentFilm.tickets_sold
                 })
             });
+
 
             if (currentFilm.tickets_sold === currentFilm.capacity) {
                 buyTicketButton.textContent = "Sold Out";
